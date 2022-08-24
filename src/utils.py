@@ -10,16 +10,17 @@ def get_cwd():
 
 def get_datasets_paths(bucket: str, datasets: list):
     """
-    It takes a bucket name and a list of datasets and returns a list of paths to those datasets
+    It takes a bucket name and a list of datasets and returns a list of tuples where each tuple contains
+    the name of the dataset and the path to the dataset in the bucket
     
     Args:
       bucket (str): the name of the bucket where the datasets are stored
-      datasets (list): list of datasets to be used for training
+      datasets (list): list of datasets to be downloaded
     
     Returns:
-      A list of strings.
+      A list of tuples, where each tuple is a dataset name and the path to that dataset in the bucket.
     """
-    return [f"{bucket}/{data}" for data in datasets]
+    return [(data, f"{bucket}/{data}") for data in datasets]
 
 def camel_case_col_names(df: DataFrame) -> DataFrame:
     """
