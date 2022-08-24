@@ -1,0 +1,24 @@
+iter_id: 1
+subset_size: 500
+
+data_repositories:
+  release_output_root: gs://genetics-portal-dev-data/22.08.0/outputs
+  transformed_data_root: gs://ot-team/irene/genetics_data/${iter_id}
+
+datasets:
+  - d2v2g
+  - d2v2g_scored
+  - l2g
+  - manhattan
+  - v2d
+  - v2d_coloc
+  - v2d_credset
+  - v2g
+  - v2g_scored
+  - variant-index
+  - sa/gwas
+  - sa/molecular_trait
+  - lut/genes-index
+  - lut/overlap-index
+  - lut/study-index
+  - lut/variant-index
