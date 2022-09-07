@@ -130,9 +130,9 @@ def transform_v2d_coloc(v2d_coloc: DataFrame) -> DataFrame:
     )
 
 
-def transform_d2v2g_scored(d2v2g_scored: DataFrame) -> DataFrame:
+def transform_d2v2g(d2v2g: DataFrame) -> DataFrame:
     return (
-        d2v2g_scored.withColumn(
+        d2v2g.withColumn(
             'lead_variant_id',
             F.concat_ws('_', F.col('lead_chrom'), F.col('lead_pos'), F.col('lead_ref'), F.col('lead_alt')),
         )
@@ -156,7 +156,9 @@ def transform_d2v2g_scored(d2v2g_scored: DataFrame) -> DataFrame:
             'lead_chrom',
             'lead_pos',
             'lead_ref',
+            'lead_alt',
             'pmid',
+            'source',
             'tag_chrom',
             'tag_pos',
             'tag_ref',
@@ -225,6 +227,7 @@ def transform_v2d(v2d: DataFrame) -> DataFrame:
             'tag_pos',
             'tag_ref',
             'tag_alt',
+            'source',
             'AFR_1000G_prop',
             'AMR_1000G_prop',
             'EAS_1000G_prop',
@@ -233,32 +236,46 @@ def transform_v2d(v2d: DataFrame) -> DataFrame:
         )
     )
 
+
 def transform_v2d_credset(v2d_credset: DataFrame) -> DataFrame:
-  return (
-    v2d_credset
-    .withColumn('lead_variant_id', F.translate('lead_variant_id', '\:', '\_'))
-    .withColumn('tag_variant_id', F.translate('lead_variant_id', '\:', '\_'))
-    .drop('lead_chrom', 'lead_pos', 'lead_ref', 'lead_alt', 'tag_chrom', 'tag_pos', 'tag_ref', 'tag_alt', 'bio_feature', 'phenotype_id', 'gene_id')
-  )
+    return (
+        v2d_credset.withColumn('lead_variant_id', F.translate('lead_variant_id', '\:', '\_'))
+        .withColumn('tag_variant_id', F.translate('lead_variant_id', '\:', '\_'))
+        .drop(
+            'lead_chrom',
+            'lead_pos',
+            'lead_ref',
+            'lead_alt',
+            'tag_chrom',
+            'tag_pos',
+            'tag_ref',
+            'tag_alt',
+            'bio_feature',
+            'phenotype_id',
+            'gene_id',
+        )
+    )
+
 
 def transform_sa_gwas(sa_gwas: DataFrame) -> DataFrame:
-  return (
-    sa_gwas
-    .withColumn('variant_id', F.concat_ws('_', F.col('chrom'), F.col('pos'), F.col('ref'), F.col('alt')))
-    .drop('chrom', 'pos', 'ref', 'alt', 'type_id', 'n_total', 'n_cases')
-  )
+    return sa_gwas.withColumn(
+        'variant_id', F.concat_ws('_', F.col('chrom'), F.col('pos'), F.col('ref'), F.col('alt'))
+    ).drop('chrom', 'pos', 'ref', 'alt', 'type_id', 'n_total', 'n_cases')
+
 
 def transform_sa_molecular_trait(sa_molecular_trait: DataFrame) -> DataFrame:
-  return (
-    sa_molecular_trait
-    .withColumn('variant_id', F.concat_ws('_', F.col('chrom'), F.col('pos'), F.col('ref'), F.col('alt')))
-    .drop('chrom', 'pos', 'ref', 'alt', 'type_id', 'phenotype_id', 'gene_id', 'bio_feature')
-  )
+    return sa_molecular_trait.withColumn(
+        'variant_id', F.concat_ws('_', F.col('chrom'), F.col('pos'), F.col('ref'), F.col('alt'))
+    ).drop('chrom', 'pos', 'ref', 'alt', 'type_id', 'phenotype_id', 'gene_id', 'bio_feature')
 
-def transform_v2g_scored(v2g_scored: DataFrame) -> DataFrame:
-  return (
-    v2g_scored
-    .withColumn('variant_id', F.concat_ws('_', F.col('chr_id'), F.col('position'), F.col('ref_allele'), F.col('alt_allele')))
-    .drop('chr_id', 'position', 'ref_allele', 'alt_allele', 'gene_id')
-  )
 
+def transform_v2g(v2g: DataFrame) -> DataFrame:
+    return v2g.withColumn(
+        'variant_id', F.concat_ws('_', F.col('chr_id'), F.col('position'), F.col('ref_allele'), F.col('alt_allele'))
+    ).drop('chr_id', 'position', 'ref_allele', 'alt_allele', 'gene_id')
+
+
+def transform_variant_index(variant: DataFrame) -> DataFrame:
+    return variant.withColumn(
+        'variant_id', F.concat_ws('_', F.col('chr_id'), F.col('position'), F.col('ref_allele'), F.col('alt_allele'))
+    ).drop('chrom', 'pos', 'ref', 'alt')

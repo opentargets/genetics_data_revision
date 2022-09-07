@@ -6,7 +6,8 @@ from src.utils import *
 
 DATASET_TRANSFORMATIONS = {
     'v2d_coloc': transform_v2d_coloc,
-    'd2v2g_scored': transform_d2v2g_scored,
+    'd2v2g': transform_d2v2g,
+    'd2v2g_scored': transform_d2v2g,
     'l2g': transform_l2g,
     'manhattan': transform_manhattan,
     'lut/overlap-index': transform_study_overlap,
@@ -14,8 +15,12 @@ DATASET_TRANSFORMATIONS = {
     'v2d_credset': transform_v2d_credset,
     'sa/gwas': transform_sa_gwas,
     'sa/molecular_trait': transform_sa_molecular_trait,
-    'v2g_scored': transform_v2g_scored
+    'v2g': transform_v2g,
+    'v2g_scored': transform_v2g,
+    'variant-index': transform_variant_index,
+    'lut/variant-index': transform_variant_index,
 }
+
 
 @hydra.main(config_path=get_cwd(), config_name="config")
 def main(cfg: DictConfig) -> None:
@@ -34,6 +39,7 @@ def main(cfg: DictConfig) -> None:
         write_subset_to_parquet(data, cfg.data_repositories.transformed_data_root, data_name, cfg.subset_size)
 
     spark.stop()
+
 
 if __name__ == '__main__':
     main()
