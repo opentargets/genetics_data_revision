@@ -100,7 +100,7 @@ def write_subset_to_parquet(df: DataFrame, bucket: str, dataset: str, subset_siz
       subset_size (int): the number of rows to write to the subset
     """
     output_path = f"{bucket}/{dataset}"
-    df.limit(subset_size).coalesce(1).write.parquet(output_path)
+    df.limit(subset_size).coalesce(1).write.format('parquet').mode('overwrite').save(output_path)
 
 
 def transform_v2d_coloc(v2d_coloc: DataFrame) -> DataFrame:

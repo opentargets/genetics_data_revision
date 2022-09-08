@@ -32,7 +32,8 @@ def main(cfg: DictConfig) -> None:
     for (data_name, data_path) in all_data_paths:
         data = spark.read.parquet(data_path)
         # Apply dataset-specific transformations
-        data = data.transform(DATASET_TRANSFORMATIONS['data_name'])
+        if data_name in DATASET_TRANSFORMATIONS.keys():
+            data = data.transform(DATASET_TRANSFORMATIONS[data_name])
         # Apply global transformations
         data = camel_case_col_names(data)
         # Write to parquet
