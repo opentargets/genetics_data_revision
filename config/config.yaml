@@ -2,7 +2,7 @@ iter_id: 2
 subset_size: 500
 
 data_repositories:
-  release_output_root: gs://genetics-portal-dev-data/22.08.0/outputs
+  release_output_root: gs://genetics-portal-dev-data/22.09.0/outputs
   transformed_data_root: gs://ot-team/irene/genetics_data/${iter_id}
 
 datasets:
