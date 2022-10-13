@@ -240,7 +240,7 @@ def transform_v2d(v2d: DataFrame) -> DataFrame:
 def transform_v2d_credset(v2d_credset: DataFrame) -> DataFrame:
     return (
         v2d_credset.withColumn('lead_variant_id', F.translate('lead_variant_id', '\:', '\_'))
-        .withColumn('tag_variant_id', F.translate('lead_variant_id', '\:', '\_'))
+        .withColumn('tag_variant_id', F.translate('tag_variant_id', '\:', '\_'))
         .drop(
             'lead_chrom',
             'lead_pos',
